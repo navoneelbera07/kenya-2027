@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tanzania 2027 · Family Safari Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F1EAD9; --card:#FBF7EC; --night:#171E15; --ink:#242A1E; --muted:#736F5F;
+    --gold:#D2942A; --gold-deep:#B87C18; --clay:#A2381F; --teal:#2C6B66; --olive:#6C7844; --indigo:#3B4E7A;
+    --line:#DED4BC; --line-soft:#E7DFCB;
+    --shadow:0 1px 2px rgba(35,40,25,.06),0 8px 28px -12px rgba(35,40,25,.18);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3{font-family:'Bricolage Grotesque','Inter',sans-serif;letter-spacing:-.02em;line-height:1.03;font-weight:800}
+  .mono{font-family:'Space Mono',ui-monospace,monospace}
+  a{color:var(--teal)}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 22px}
+
+  header.top{position:sticky;top:0;z-index:50;background:rgba(241,234,217,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top .wrap{display:flex;align-items:center;gap:14px;height:60px}
+  .brand{font-family:'Bricolage Grotesque';font-weight:800;font-size:16px;white-space:nowrap}
+  .brand .dot{color:var(--gold)}
+  nav.jump{display:flex;gap:0;margin-left:auto;flex-wrap:wrap}
+  nav.jump a{font-size:12.5px;color:var(--muted);text-decoration:none;padding:7px 8px;border-radius:8px;font-weight:500}
+  nav.jump a:hover{color:var(--ink);background:var(--line-soft)}
+  .pill{font-family:'Space Mono';font-size:12.5px;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);white-space:nowrap}
+  .pill.ok{color:var(--teal);border-color:#BCD3CF;background:#EAF2F0}
+  .pill.over{color:var(--clay);border-color:#E3C3B9;background:#F6E9E4}
+
+  .hero{position:relative;overflow:hidden;background:var(--night);color:#F3EEDF}
+  .hero .wrap{padding:56px 22px 130px;position:relative;z-index:2}
+  .eyebrow{font-family:'Space Mono';font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);margin:0 0 18px}
+  .hero h1{font-size:clamp(38px,7vw,70px);margin:0;color:#F6F1E3}
+  .hero h1 em{font-style:normal;color:var(--gold)}
+  .hero p.lede{max-width:580px;margin:22px 0 0;font-size:17px;color:#D7D0BD}
+  .facts{display:flex;flex-wrap:wrap;gap:26px;margin-top:30px}
+  .facts .k{font-family:'Space Mono';font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#A49C86}
+  .facts .v{font-family:'Bricolage Grotesque';font-weight:700;font-size:19px;color:#F3EEDF;margin-top:3px}
+  .horizon{position:absolute;left:0;right:0;bottom:-1px;z-index:1;display:block;width:100%;height:170px}
+
+  section{padding:64px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:8px}
+  .sec-num{font-family:'Space Mono';font-size:13px;color:var(--gold-deep);font-weight:700}
+  h2{font-size:clamp(26px,4vw,38px);margin:0}
+  .sec-sub{color:var(--muted);max-width:680px;margin:12px 0 34px;font-size:15.5px}
+
+  .studio{display:grid;grid-template-columns:340px 1fr;gap:26px;align-items:start}
+  @media(max-width:860px){.studio{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:var(--shadow)}
+  .ctl{margin-bottom:20px}
+  .ctl:last-child{margin-bottom:0}
+  .ctl > label.q{display:block;font-family:'Space Mono';font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+  .seg{display:flex;flex-wrap:wrap;gap:6px}
+  .seg button{font-family:'Inter';font-size:13px;font-weight:500;padding:8px 12px;border-radius:9px;cursor:pointer;border:1px solid var(--line);background:#fff;color:var(--ink);transition:all .14s}
+  .seg button:hover{border-color:var(--gold)}
+  .seg button[aria-pressed="true"]{background:var(--night);color:#F3EEDF;border-color:var(--night)}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .switch{position:relative;width:46px;height:26px;flex:none}
+  .switch input{opacity:0;width:0;height:0;position:absolute}
+  .slider{position:absolute;inset:0;background:var(--line);border-radius:999px;transition:.16s;cursor:pointer}
+  .slider::before{content:"";position:absolute;height:20px;width:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.16s;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+  .switch input:checked + .slider{background:var(--teal)}
+  .switch input:checked + .slider::before{transform:translateX(20px)}
+  .switch input:disabled + .slider{background:var(--gold);cursor:not-allowed;opacity:.85}
+  .switch input:focus-visible + .slider{outline:2px solid var(--gold);outline-offset:2px}
+  .hint{font-size:12px;color:var(--muted);margin-top:6px}
+  .locked{font-family:'Space Mono';font-size:9.5px;font-weight:700;color:var(--gold-deep);background:#F6EDD6;padding:2px 6px;border-radius:5px;margin-left:6px;letter-spacing:.05em}
+
+  .result-top{display:flex;flex-wrap:wrap;align-items:flex-end;gap:8px 26px;margin-bottom:6px}
+  .bignum{font-family:'Bricolage Grotesque';font-weight:800;font-size:clamp(40px,7vw,60px);line-height:.9;letter-spacing:-.03em}
+  .bignum .cur{font-size:.5em;color:var(--muted);font-weight:700;vertical-align:.15em}
+  .usd{font-family:'Space Mono';font-size:14px;color:var(--muted)}
+  .status{font-family:'Space Mono';font-size:13px;font-weight:700;padding:5px 10px;border-radius:8px;display:inline-block}
+  .status.ok{color:var(--teal);background:#EAF2F0}
+  .status.over{color:var(--clay);background:#F6E9E4}
+
+  .meter{margin:22px 0 4px}
+  .meter-track{position:relative;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--line);background:linear-gradient(#EFE7D2,#E7DCC0)}
+  .meter-fill{position:absolute;left:0;top:0;bottom:0;border-radius:12px 0 0 12px;transition:width .35s cubic-bezier(.4,0,.2,1),background .3s}
+  .meter-ceiling{position:absolute;top:-6px;bottom:-6px;width:0;border-left:2.5px dashed var(--clay);z-index:3}
+  .meter-ceiling::after{content:"£15k hard wall";position:absolute;top:-20px;left:6px;font-family:'Space Mono';font-size:10.5px;font-weight:700;color:var(--clay);white-space:nowrap}
+  .meter-sun{position:absolute;top:50%;transform:translate(-50%,-50%);width:26px;height:26px;border-radius:50%;background:radial-gradient(circle at 40% 38%,#FFE39A,var(--gold) 60%,var(--gold-deep));box-shadow:0 0 0 5px rgba(210,148,42,.18);z-index:4;transition:left .35s cubic-bezier(.4,0,.2,1)}
+  .meter-scale{display:flex;justify-content:space-between;font-family:'Space Mono';font-size:10.5px;color:var(--muted);margin-top:7px}
+
+  .break{display:grid;grid-template-columns:150px 1fr;gap:24px;align-items:center;margin-top:26px}
+  @media(max-width:520px){.break{grid-template-columns:1fr;justify-items:center;text-align:center}}
+  .donut{width:150px;height:150px;border-radius:50%;position:relative;transition:background .35s}
+  .donut::after{content:"";position:absolute;inset:26px;background:var(--card);border-radius:50%}
+  .donut .center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2}
+  .donut .center .lbl{font-family:'Space Mono';font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .donut .center .amt{font-family:'Bricolage Grotesque';font-weight:800;font-size:19px}
+  .legend{display:flex;flex-direction:column;gap:6px}
+  .legend .row{display:flex;align-items:center;gap:9px;font-size:13px}
+  .legend .row .sw{width:11px;height:11px;border-radius:3px;flex:none}
+  .legend .row .nm{flex:1}
+  .legend .row .amt{font-family:'Space Mono';font-size:12px;color:var(--muted)}
+
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .presets button{font-size:12.5px;font-weight:500;padding:8px 13px;border-radius:999px;cursor:pointer;border:1px solid var(--line);background:#fff;transition:.14s}
+  .presets button:hover{border-color:var(--gold)}
+  .presets button.rec{border-color:var(--teal);color:var(--teal);font-weight:600}
+
+  .scenarios{margin-top:30px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;box-shadow:var(--shadow)}
+  .scenarios h3{font-size:18px;margin:0 0 4px}
+  .scenarios .cap{color:var(--muted);font-size:13.5px;margin:0 0 22px}
+  .sbar{margin-bottom:15px}
+  .sbar .lab{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;gap:10px}
+  .sbar .lab .n{font-size:13.5px;font-weight:600}
+  .sbar .lab .n small{font-weight:400;color:var(--muted);font-family:'Inter'}
+  .sbar .lab .amt{font-family:'Space Mono';font-size:13px;font-weight:700}
+  .sbar .track{position:relative;height:22px;background:#EDE5D0;border-radius:7px}
+  .sbar .fillb{height:100%;border-radius:7px;transition:width .5s}
+  .sbar.rec .fillb{outline:2px solid var(--night);outline-offset:1px}
+  .ceil-line{position:absolute;top:-4px;bottom:-4px;border-left:2px dashed var(--clay);z-index:5}
+
+  .tl{position:relative}
+  .day{display:grid;grid-template-columns:96px 1fr;gap:20px;padding:22px 0;border-top:1px solid var(--line-soft)}
+  .day:first-child{border-top:none}
+  @media(max-width:620px){.day{grid-template-columns:1fr;gap:8px}}
+  .day .when{position:sticky;top:74px;align-self:start}
+  .day .dnum{font-family:'Space Mono';font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--gold-deep);font-weight:700}
+  .day .date{font-family:'Bricolage Grotesque';font-weight:800;font-size:22px;margin-top:2px;line-height:1}
+  .day .dow{font-size:12px;color:var(--muted);margin-top:3px}
+  .day h3{font-size:19px;margin:0 0 7px}
+  .day p{margin:0 0 9px;font-size:14.5px}
+  .day .meta{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px;font-family:'Space Mono';font-size:10.5px}
+  .chip{padding:3px 8px;border-radius:6px;border:1px solid var(--line);color:var(--muted)}
+  .chip.stay{color:var(--teal);border-color:#B7D0CC}
+  .chip.hi{color:var(--clay);border-color:#E3C3B9;background:#F9EFEA;font-weight:700}
+  .chip.fam{color:var(--olive);border-color:#CCD1B4}
+  .chip.sea{color:var(--indigo);border-color:#B9C3DA}
+
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(268px,1fr));gap:18px}
+  .hcard{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+  .tag{font-family:'Space Mono';font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;padding:3px 8px;border-radius:6px;align-self:flex-start;margin-bottom:12px}
+  .tag.lux{color:var(--clay);background:#F6E9E4}
+  .tag.mid{color:var(--teal);background:#EAF2F0}
+  .tag.val{color:var(--olive);background:#EEF0E0}
+  .tag.city{color:var(--gold-deep);background:#F6EDD6}
+  .tag.sea{color:var(--indigo);background:#EAEDF5}
+  .hcard h3{font-size:19px;margin:0 0 3px}
+  .hcard .loc{font-size:12.5px;color:var(--muted);margin-bottom:12px}
+  .hcard .rate{font-family:'Space Mono';font-weight:700;font-size:15px;margin-bottom:12px}
+  .hcard .rate small{font-family:'Inter';font-weight:400;color:var(--muted);font-size:12px}
+  .hcard ul{margin:0 0 14px;padding:0;list-style:none;font-size:13.5px}
+  .hcard ul li{padding:4px 0 4px 20px;position:relative}
+  .hcard ul li::before{content:"";position:absolute;left:2px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+  .hcard .foot{margin-top:auto;display:flex;gap:7px;flex-wrap:wrap;font-family:'Space Mono';font-size:10.5px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:700px){.grid2{grid-template-columns:1fr}}
+  .info{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+  .info h3{font-size:18px;margin:0 0 12px;display:flex;align-items:center;gap:9px}
+  .info .em{font-size:20px}
+  .info p{font-size:14px;margin:0 0 10px}
+  .fx{font-family:'Space Mono';font-size:13px;background:#EFE7D2;padding:2px 6px;border-radius:5px;font-weight:700}
+  .kv{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13.5px;margin-top:4px}
+  .kv .k{color:var(--muted)}
+  .kv .v{font-weight:500;text-align:right}
+  .note{font-size:13px;color:var(--muted);background:#EFE7D2;border-radius:9px;padding:12px 14px;margin-top:16px}
+  .note b{color:var(--ink)}
+  .note.warn{background:#F6E9E4;color:#6E3626}
+  .note.warn b{color:var(--clay)}
+  .note.good{background:#E7F0EC;color:#2b5147}
+  .note.good b{color:var(--teal)}
+
+  .dish{display:grid;grid-template-columns:160px 1fr;gap:16px;padding:13px 0;border-top:1px solid var(--line-soft);font-size:14px}
+  .dish:first-of-type{border-top:none}
+  @media(max-width:560px){.dish{grid-template-columns:1fr;gap:2px}}
+  .dish .nm{font-weight:600}
+  .dish .nm span{display:block;font-family:'Space Mono';font-size:10.5px;color:var(--muted);font-weight:400;margin-top:2px}
+  .safe{font-family:'Space Mono';font-size:9.5px;font-weight:700;color:var(--olive);background:#EEF0E0;padding:2px 6px;border-radius:5px;margin-left:6px;white-space:nowrap}
+
+  footer{padding:40px 0 60px;color:var(--muted);font-size:12.5px}
+  footer .wrap{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+  :focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:6px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <span class="brand">Tanzania <span class="dot">·</span> 2027</span>
+    <nav class="jump">
+      <a href="#studio">Budget</a>
+      <a href="#itinerary">Itinerary</a>
+      <a href="#stay">Stay</a>
+      <a href="#flights">Flights</a>
+      <a href="#food">Food</a>
+      <a href="#shopping">Shopping</a>
+      <a href="#essentials">Essentials</a>
+    </nav>
+    <span class="pill" id="headPill">£—</span>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Thu 19 – Mon 30 August 2027 · 3 travellers · all Tanzania</p>
+    <h1>The migration,<br>the crater,<br><em>the ocean.</em></h1>
+    <p class="lede">One country, no backtracking. Kilimanjaro's foothills, the Serengeti river crossings, the Ngorongoro Crater, then the Indian Ocean off Zanzibar. Balloon locked in, a private room each, built to land under £15,000.</p>
+    <div class="facts">
+      <div><div class="k">Days</div><div class="v">12 / 11 nights</div></div>
+      <div><div class="k">On safari</div><div class="v">Serengeti + crater</div></div>
+      <div><div class="k">Balloon</div><div class="v">Day 5, at dawn</div></div>
+      <div><div class="k">Hard wall</div><div class="v">£15,000</div></div>
+    </div>
+  </div>
+  <svg class="horizon" viewBox="0 0 1440 170" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0,120 C240,90 360,140 600,120 C840,100 960,150 1200,125 C1320,113 1400,120 1440,118 L1440,170 L0,170 Z" fill="#F1EAD9"/>
+    <path d="M0,140 C300,120 480,158 720,142 C960,126 1140,160 1440,144 L1440,170 L0,170 Z" fill="#F1EAD9"/>
+    <g opacity=".9" fill="#171E15"><path d="M560,120 l60,-58 l60,58 z M600,120 l40,-70 l40,70 z"/></g>
+  </svg>
+</div>
+
+<!-- BUDGET -->
+<section id="studio">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2>Budget studio</h2></div>
+    <p class="sec-sub">All-Tanzania, mid-range, peak August, for all three of you with your own room. The balloon is locked on. The dashed line is your hard £15,000 wall; the "2027 uplift" switch stress-tests for price rises before you book.</p>
+
+    <div class="studio">
+      <div class="panel">
+        <div class="ctl">
+          <label class="q">Safari comfort</label>
+          <div class="seg" id="segComfort" role="group" aria-label="Safari comfort">
+            <button data-v="budgetmid">Budget-mid</button>
+            <button data-v="mid" aria-pressed="true">Mid ★</button>
+            <button data-v="plus">Comfort-plus</button>
+          </div>
+          <div class="hint" id="comfortHint"></div>
+        </div>
+
+        <div class="ctl">
+          <label class="q">Nights in the Serengeti</label>
+          <div class="seg" id="segSer" role="group" aria-label="Serengeti nights">
+            <button data-v="2">2</button>
+            <button data-v="3" aria-pressed="true">3</button>
+            <button data-v="4">4</button>
+          </div>
+          <div class="hint">Northern Serengeti (Kogatende) for the river crossings. 3 gives real odds.</div>
+        </div>
+
+        <div class="ctl">
+          <label class="q">Nights in Zanzibar</label>
+          <div class="seg" id="segZan" role="group" aria-label="Zanzibar nights">
+            <button data-v="3">3</button>
+            <button data-v="4" aria-pressed="true">4</button>
+            <button data-v="5">5</button>
+          </div>
+          <div class="hint">After early safari mornings, the beach is the reward. Each night ≈ £180 for the group.</div>
+        </div>
+
+        <div class="ctl">
+          <div class="toggle-row">
+            <label class="q" style="margin:0" for="tBalloon">Balloon safari <span class="locked">MUST</span></label>
+            <span class="switch"><input type="checkbox" id="tBalloon" checked disabled><span class="slider"></span></span>
+          </div>
+          <div class="hint">~$550pp over the Serengeti — always included.</div>
+        </div>
+
+        <div class="ctl">
+          <div class="toggle-row">
+            <label class="q" style="margin:0" for="tSingle">Your own room</label>
+            <span class="switch"><input type="checkbox" id="tSingle" checked><span class="slider"></span></span>
+          </div>
+          <div class="hint">Private room throughout; a single supplement applies on the safari camps.</div>
+        </div>
+
+        <div class="ctl">
+          <div class="toggle-row">
+            <label class="q" style="margin:0" for="tUplift">2027 uplift (+7%)</label>
+            <span class="switch"><input type="checkbox" id="tUplift"><span class="slider"></span></span>
+          </div>
+          <div class="hint">Camp and flight rates are set annually — test the drift.</div>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <div class="result-top">
+            <div>
+              <div class="bignum"><span class="cur">£</span><span id="totalGbp">—</span></div>
+              <div class="usd" id="totalUsd">≈ $—</div>
+            </div>
+            <div class="status ok" id="statusBadge">—</div>
+          </div>
+
+          <div class="meter">
+            <div class="meter-track">
+              <div class="meter-fill" id="meterFill" style="width:0%"></div>
+              <div class="meter-ceiling" id="meterCeiling" style="left:0%"></div>
+              <div class="meter-sun" id="meterSun" style="left:0%"></div>
+            </div>
+            <div class="meter-scale"><span>£0</span><span>£9k</span><span>£18k</span></div>
+          </div>
+
+          <div class="break">
+            <div class="donut" id="donut">
+              <div class="center"><span class="lbl">Group total</span><span class="amt" id="donutAmt">£—</span></div>
+            </div>
+            <div class="legend" id="legend"></div>
+          </div>
+
+          <div class="presets" id="presets">
+            <button data-preset="rec" class="rec">Recommended build ★</button>
+            <button data-preset="buffer">Build a buffer</button>
+            <button data-preset="max">Max comfort in budget</button>
+          </div>
+        </div>
+
+        <div class="scenarios">
+          <h3>What-if scenarios</h3>
+          <p class="cap">Group totals, balloon always in, own room on. Dashed line = £15,000.</p>
+          <div id="scenarioBars"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="note good"><b>Why this fits where the Mara version couldn't.</b> Staying in one country kills a whole travel day and the mandatory yellow-fever jab, and pairs the Serengeti with Ngorongoro on a single circuit instead of paying for two countries' safaris. The migration and the crossings are the same — they're just on the Tanzanian side of the same plains in August.</div>
+  </div>
+</section>
+
+<!-- ITINERARY -->
+<section id="itinerary">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2>Day by day</h2></div>
+    <p class="sec-sub">Sitting mid-window so you're in the northern Serengeti during peak crossing time. Light aircraft between regions keep the long, bumpy drives off your parents' shoulders.</p>
+
+    <div class="tl">
+      <div class="day">
+        <div class="when"><div class="dnum">Day 1</div><div class="date">19 Aug</div><div class="dow">Thursday</div></div>
+        <div>
+          <h3>Evening departures</h3>
+          <p>You fly from London, your parents from Delhi — both routed through a Gulf hub (Doha, Dubai or Abu Dhabi) rather than Nairobi or Addis, which keeps the yellow-fever requirement off the table. Overnight in the air.</p>
+          <div class="meta"><span class="chip">Overnight flight</span><span class="chip">Meet in the Gulf or at JRO</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 2</div><div class="date">20 Aug</div><div class="dow">Friday</div></div>
+        <div>
+          <h3>Arrive Kilimanjaro, settle in Arusha</h3>
+          <p>Land at Kilimanjaro International (JRO). A short transfer to a garden lodge near Arusha to recover, with the mountain on the horizon on a clear afternoon. Nothing strenuous — a gentle first day.</p>
+          <div class="meta"><span class="chip stay">Arusha · 2 rooms</span><span class="chip">Recovery day</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 3</div><div class="date">21 Aug</div><div class="dow">Saturday</div></div>
+        <div>
+          <h3>Kilimanjaro, without the climb</h3>
+          <p>Your Kili day. The gentle option is the Materuni waterfalls and a village coffee tour; the more active option is a rainforest day hike from Marangu Gate up to Mandara Hut and Maundi Crater, then back down — a real taste of the mountain with the summit in view, no altitude, home by evening.</p>
+          <div class="meta"><span class="chip stay">Arusha · 2 rooms</span><span class="chip hi">★ Kilimanjaro day</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 4</div><div class="date">22 Aug</div><div class="dow">Sunday</div></div>
+        <div>
+          <h3>Fly to the northern Serengeti</h3>
+          <p>A light aircraft from Arusha to Kogatende airstrip (~1h30), deep in the migration zone near the Mara River. Your Tanzanian guide meets you and the drive to camp is your first game drive.</p>
+          <div class="meta"><span class="chip stay">Serengeti · family tent</span><span class="chip">Bush flight</span><span class="chip fam">Private bedrooms</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 5</div><div class="date">23 Aug</div><div class="dow">Monday</div></div>
+        <div>
+          <h3>Balloon at dawn, crossings by day</h3>
+          <p>Pre-dawn lift-off over the plains as the sun comes up, then a champagne bush breakfast on landing. The rest of the day is spent on the riverbanks — August is peak Mara River crossing season here, with far fewer vehicles than the Kenyan side.</p>
+          <div class="meta"><span class="chip stay">Serengeti · family tent</span><span class="chip hi">★ Balloon</span><span class="chip">Crossing watch</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 6</div><div class="date">24 Aug</div><div class="dow">Tuesday</div></div>
+        <div>
+          <h3>Full Serengeti day</h3>
+          <p>Dawn and late-afternoon drives for big cats and another chance at a crossing if the herds haven't obliged yet. This is the endless-plains Serengeti of the imagination.</p>
+          <div class="meta"><span class="chip stay">Serengeti · family tent</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 7</div><div class="date">25 Aug</div><div class="dow">Wednesday</div></div>
+        <div>
+          <h3>Down into the Ngorongoro Crater</h3>
+          <p>Transfer south to the Ngorongoro highlands, then descend onto the crater floor — the densest wildlife in Africa, with a real chance of black rhino to complete the Big Five. Overnight on the cool crater rim (pack a warm layer — it drops to single digits at night).</p>
+          <div class="meta"><span class="chip stay">Crater rim · 2 rooms</span><span class="chip hi">Crater floor</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 8</div><div class="date">26 Aug</div><div class="dow">Thursday</div></div>
+        <div>
+          <h3>Fly to Zanzibar</h3>
+          <p>From a nearby airstrip, a flight to the island (~2–3h with a refuel stop). Transfer to the north coast, where the beaches are swimmable at any tide. The safari's early mornings are behind you now.</p>
+          <div class="meta"><span class="chip sea">Zanzibar · 2 rooms</span><span class="chip">Island flight</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 9</div><div class="date">27 Aug</div><div class="dow">Friday</div></div>
+        <div>
+          <h3>Stone Town &amp; spice tour — Mum's day</h3>
+          <p>A full day in Stone Town: the labyrinth of the UNESCO old town, a spice-plantation tour, Darajani market, and the shopping. This is where the Nairobi shopping day relocated to — spices, textiles, carved chests and art. See the shopping guide below.</p>
+          <div class="meta"><span class="chip sea">Zanzibar · 2 rooms</span><span class="chip hi">Stone Town + spices</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Days 10–11</div><div class="date">28–29 Aug</div><div class="dow">Sat–Sun</div></div>
+        <div>
+          <h3>Beach — do very little</h3>
+          <p>Two open days for the water: snorkelling at Mnemba Atoll, a dhow sunset cruise, or simply the pool and the sand. Total decompression before the long flights home.</p>
+          <div class="meta"><span class="chip sea">Zanzibar · 2 rooms</span><span class="chip">Snorkel · dhow · rest</span></div>
+        </div>
+      </div>
+
+      <div class="day">
+        <div class="when"><div class="dnum">Day 12</div><div class="date">30 Aug</div><div class="dow">Mon · BH</div></div>
+        <div>
+          <h3>Home from Zanzibar — on the bank holiday</h3>
+          <p>Fly out of Zanzibar (ZNZ) via a Gulf hub — you to London, your parents to Delhi. An open-jaw ticket (into JRO, out of ZNZ) means no backtracking. You travel home on the UK Summer Bank Holiday, so the return costs you no annual leave.</p>
+          <div class="meta"><span class="chip hi">UK bank holiday</span><span class="chip">Fly home</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STAY -->
+<section id="stay">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2>Where you'll stay</h2></div>
+    <p class="sec-sub">Own bedrooms throughout. On safari that means a <b>family tent</b> (two bedrooms, shared lounge) or two tents; in Arusha and Zanzibar, simply two rooms. All picks are mid-range and road- or fly-accessible for this route.</p>
+
+    <h3 style="font-size:14px;font-family:'Space Mono';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px">Arusha · 2 nights (Kili base)</h3>
+    <div class="cards" style="margin-bottom:38px">
+      <div class="hcard">
+        <span class="tag val">Recommended · garden calm</span>
+        <h3>Rivertrees Country Inn</h3>
+        <div class="loc">Usa River · between JRO and Arusha</div>
+        <div class="rate">~$180–260 <small>/ room / night</small></div>
+        <ul><li>Riverside garden lodge — ideal to recover from the flights</li><li>Well placed for both the airport and the Kili day trip</li><li>Family cottages available</li></ul>
+        <div class="foot"><span class="chip fam">Family cottages</span><span class="chip">Near JRO</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag city">Step up</span>
+        <h3>Arusha Coffee Lodge</h3>
+        <div class="loc">On a working coffee plantation</div>
+        <div class="rate">~$300+ <small>/ room / night</small></div>
+        <ul><li>Plantation-chalet charm, excellent food</li><li>Elewana-run, polished service</li><li>A lovely bookend if the budget allows</li></ul>
+        <div class="foot"><span class="chip">Plantation</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Space Mono';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px">Northern Serengeti · 3 nights (the crossings)</h3>
+    <div class="cards" style="margin-bottom:38px">
+      <div class="hcard">
+        <span class="tag mid">Recommended · follows the herds</span>
+        <h3>Nasikia Mobile Migration Camp</h3>
+        <div class="loc">Kogatende, northern Serengeti (Aug)</div>
+        <div class="rate">~$400–500 <small>pp / night · all-in</small></div>
+        <ul><li>Mobile camp that moves to sit near the crossings</li><li>Affordable end of mid-range, genuine bush feel</li><li>Ask for the family tent or two tents side by side</li></ul>
+        <div class="foot"><span class="chip fam">Family tent on request</span><span class="chip">Fly-in</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag val">Value alternative</span>
+        <h3>Chaka Camp</h3>
+        <div class="loc">Northern Serengeti (seasonal)</div>
+        <div class="rate">~$380–460 <small>pp / night · all-in</small></div>
+        <ul><li>Comfortable mobile camp tracking the migration</li><li>Good guiding, relaxed atmosphere</li><li>Reliable mid-range value in peak season</li></ul>
+        <div class="foot"><span class="chip fam">Family option</span><span class="chip">Fly-in</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag lux">The dream · over budget</span>
+        <h3>Sayari Camp / Lamai Serengeti</h3>
+        <div class="loc">Kogatende / Lamai · permanent luxury</div>
+        <div class="rate">~$900–1,300 <small>pp / night</small></div>
+        <ul><li>Some of the best positioned camps for the crossings</li><li>Superb design and guiding</li><li>Two nights here would blow the wall — noted for reference</li></ul>
+        <div class="foot"><span class="chip">Fly-in</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Space Mono';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px">Ngorongoro · 1 night (crater rim)</h3>
+    <div class="cards" style="margin-bottom:38px">
+      <div class="hcard">
+        <span class="tag mid">Recommended · family rooms</span>
+        <h3>Ngorongoro Sopa Lodge</h3>
+        <div class="loc">Eastern rim · early crater access</div>
+        <div class="rate">~$280–360 <small>pp / night · full board</small></div>
+        <ul><li>Eastern rim means you're often first down into the crater</li><li>Largest room inventory here — family rooms available</li><li>Warm indoor bathrooms (they matter at 8°C)</li></ul>
+        <div class="foot"><span class="chip fam">Family rooms</span><span class="chip">Rim views</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag val">Value</span>
+        <h3>Rhino Lodge</h3>
+        <div class="loc">Inside the conservation boundary</div>
+        <div class="rate">~$200–320 <small>pp / night · full board</small></div>
+        <ul><li>Simple, reliable, best value on the rim</li><li>Hot water and honest comfort</li><li>Frees budget for the Serengeti nights</li></ul>
+        <div class="foot"><span class="chip">Best value</span></div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px;font-family:'Space Mono';font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 16px">Zanzibar · 4 nights (north coast)</h3>
+    <div class="cards">
+      <div class="hcard">
+        <span class="tag sea">Recommended coast</span>
+        <h3>Nungwi / Kendwa</h3>
+        <div class="loc">Northern tip of the island</div>
+        <div class="rate">The right side <small>for your trip</small></div>
+        <ul><li>The only beaches swimmable at <b>any</b> tide — elsewhere the sea recedes a kilometre at low tide</li><li>Best sunsets, liveliest scene, most family resorts</li><li>Kendwa slightly quieter than Nungwi</li></ul>
+        <div class="foot"><span class="chip sea">All-day swimming</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag mid">Mid-range family</span>
+        <h3>DoubleTree by Hilton / Riu Jambo</h3>
+        <div class="loc">Nungwi</div>
+        <div class="rate">~$180–260 <small>/ room / night</small></div>
+        <ul><li>Reliable, family-friendly, pools and all-day swimming</li><li>Riu Jambo is all-inclusive if you'd rather not think about meals</li><li>Two rooms, easy logistics</li></ul>
+        <div class="foot"><span class="chip fam">Family rooms</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag lux">Splurge finish</span>
+        <h3>Zuri Zanzibar / Gold Zanzibar</h3>
+        <div class="loc">Kendwa area</div>
+        <div class="rate">~$450+ <small>/ room / night</small></div>
+        <ul><li>Beautiful bungalow resorts with interconnecting family options</li><li>A memorable last few nights if there's headroom</li><li>Toggle "Comfort-plus" in the studio to price it</li></ul>
+        <div class="foot"><span class="chip fam">Interconnecting</span></div>
+      </div>
+    </div>
+    <div class="note"><b>Packing note for the bush flights:</b> the light aircraft between regions enforce a strict <b>15 kg soft-bag limit</b> per person — no hard suitcases. Most Zanzibar resorts and Arusha lodges will store your excess luggage while you're on safari, so pack a small soft safari bag inside your main case.</div>
+  </div>
+</section>
+
+<!-- FLIGHTS -->
+<section id="flights">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2>Flights &amp; the route</h2></div>
+    <p class="sec-sub">The whole trip is an open-jaw: fly <b>into Kilimanjaro (JRO)</b>, home <b>out of Zanzibar (ZNZ)</b>. Open-jaw tickets usually cost about the same as a return and save you doubling back.</p>
+    <div class="grid2" style="margin-bottom:22px">
+      <div class="info">
+        <h3><span class="em">🇮🇳</span> Delhi → JRO … ZNZ → Delhi <span style="font-size:12px;color:var(--muted);font-weight:400">(parents)</span></h3>
+        <div class="kv">
+          <span class="k">Via</span><span class="v">Doha, Dubai or Abu Dhabi (not Nairobi/Addis)</span>
+          <span class="k">Carriers</span><span class="v">Qatar, Emirates, Etihad + Precision/Air Tanzania</span>
+          <span class="k">Why the Gulf</span><span class="v">Avoids the yellow-fever transit rule</span>
+          <span class="k">Est. open-jaw</span><span class="v"><b class="fx">~$950–1,150 pp</b></span>
+        </div>
+      </div>
+      <div class="info">
+        <h3><span class="em">🇬🇧</span> London → JRO … ZNZ → London <span style="font-size:12px;color:var(--muted);font-weight:400">(you)</span></h3>
+        <div class="kv">
+          <span class="k">Carriers</span><span class="v">Kenya Airways, RwandAir, Qatar, KLM</span>
+          <span class="k">Note</span><span class="v">Pick a Gulf/Kigali routing over a Nairobi one</span>
+          <span class="k">Est. open-jaw</span><span class="v"><b class="fx">~£750–1,000</b></span>
+        </div>
+      </div>
+    </div>
+    <div class="info">
+      <h3><span class="em">✈️</span> The two internal bush flights</h3>
+      <div class="kv">
+        <span class="k">Arusha → Kogatende</span><span class="v">~1h30 · Auric Air / Coastal · ~$250–400 pp</span>
+        <span class="k">Serengeti area → Zanzibar</span><span class="v">~2–3h with a refuel stop · ~$300–350 pp</span>
+        <span class="k">Aircraft</span><span class="v">Cessna Caravan turboprop · 15 kg soft bag</span>
+      </div>
+      <div class="note"><b>No cross-border driving anyway:</b> even if you'd kept the Mara, Kenyan and Tanzanian safari vehicles can't cross into each other's parks — so flying was always the mechanism. Going all-Tanzania simply means you skip the Mara → Nairobi → JRO relay and start your safari clock sooner.</div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD -->
+<section id="food">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">05</span><h2>Food guide</h2></div>
+    <p class="sec-sub">Tanzanian cooking runs from hearty mainland staples to the spice-soaked Swahili food of the coast — and Zanzibar, the original Spice Island, is a genuine highlight. Your no-beef rule is effortless here: goat, chicken and (on the coast) superb seafood carry everything.</p>
+
+    <div class="grid2" style="margin-bottom:26px">
+      <div class="info">
+        <h3><span class="em">🔥</span> On the mainland</h3>
+        <p><b>Nyama choma</b> — charcoal-grilled meat, the social ritual of Tanzania, best as goat or chicken. <b>Mshikaki</b> are marinated grilled skewers, great as street food.</p>
+        <p>Served with <b>ugali</b> (the maize staple), <b>wali</b> (rice) or <b>chipsi</b> (fries), plus <b>kachumbari</b> salad and sautéed <b>mchicha</b> greens.</p>
+        <p>Wash it down with a cold <b>Kilimanjaro</b> or <b>Serengeti</b> lager, or spiced <b>chai</b>.</p>
+      </div>
+      <div class="info">
+        <h3><span class="em">🌊</span> On the coast (Zanzibar)</h3>
+        <p>This is where it gets special. <b>Zanzibar biryani and pilau</b>, coconut fish curry (<b>mchuzi wa samaki</b>), grilled octopus, and <b>wali wa nazi</b> (coconut rice).</p>
+        <p>Street food at <b>Forodhani night market</b> in Stone Town: <b>Zanzibar "pizza,"</b> <b>urojo</b> (a tangy mango-and-bhajia soup, Indian-influenced), sugarcane juice.</p>
+        <p>Spices everywhere — cloves, cardamom, nutmeg, vanilla — grown on the plantations you'll tour.</p>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="font-size:18px;margin:0 0 6px">Dishes to seek out</h3>
+      <p style="color:var(--muted);font-size:13.5px;margin:0 0 16px">All easily no-beef; the coast is a seafood-and-veg paradise.</p>
+      <div class="dish"><div class="nm">Nyama choma <span>grilled meat</span></div><div class="d">Charcoal-grilled goat or chicken, pulled apart and shared. The mainland classic. <span class="safe">goat/chicken</span></div></div>
+      <div class="dish"><div class="nm">Zanzibar biryani <span>spiced rice</span></div><div class="d">Fragrant layered rice with chicken or fish — the coast's Indian-Omani heritage on a plate. <span class="safe">chicken/fish</span></div></div>
+      <div class="dish"><div class="nm">Mchuzi wa samaki <span>fish curry</span></div><div class="d">Fish simmered in coconut, tamarind and spice. Order it with coconut rice. <span class="safe">fish</span></div></div>
+      <div class="dish"><div class="nm">Octopus curry <span>pweza wa nazi</span></div><div class="d">Tender octopus in a rich coconut sauce — a Zanzibari signature. <span class="safe">seafood</span></div></div>
+      <div class="dish"><div class="nm">Urojo <span>Zanzibar mix</span></div><div class="d">Tangy soup of mango, bhajia and crisps — the island's beloved street snack, and vegetarian. <span class="safe">veg</span></div></div>
+      <div class="dish"><div class="nm">Zanzibar "pizza" <span>Forodhani street food</span></div><div class="d">A thin stuffed, folded and griddled crêpe — savoury or with banana and chocolate. <span class="safe">veg option</span></div></div>
+      <div class="dish"><div class="nm">Ugali &amp; mchicha <span>staple + greens</span></div><div class="d">Maize staple with sautéed amaranth greens — the everyday mainland plate. <span class="safe">veg</span></div></div>
+      <div class="dish"><div class="nm">Mandazi &amp; chai <span>snack</span></div><div class="d">Lightly sweet fried dough with spiced tea. Perfect mid-morning. <span class="safe">veg</span></div></div>
+    </div>
+
+    <div class="note"><b>On safari and at the resorts:</b> all camps are full board and used to every dietary need — no-beef, vegetarian, halal, Jain all routine. Flag it at booking. Camp water is filtered; on the light aircraft and game drives, stick to bottled.</div>
+  </div>
+</section>
+
+<!-- SHOPPING -->
+<section id="shopping">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">06</span><h2>Shopping guide</h2></div>
+    <p class="sec-sub">Two great shopping stops replace the Nairobi day: Arusha at the start (crafts and Tanzanite), and Stone Town at the end (spices, textiles, antiques). Both beat the pushy roadside markets.</p>
+
+    <div class="cards" style="margin-bottom:24px">
+      <div class="hcard">
+        <span class="tag city">Arusha · Day 2–3</span>
+        <h3>Cultural Heritage Centre</h3>
+        <div class="loc">Arusha · on the road to the airport</div>
+        <ul><li>Enormous, well-curated art, craft and jewellery complex</li><li>Everything from Makonde carvings to contemporary East African art</li><li>Fixed prices, reliable quality, ships home</li></ul>
+        <div class="foot"><span class="chip">Ships home</span><span class="chip">Fixed price</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag city">Arusha · ethical</span>
+        <h3>Shanga</h3>
+        <div class="loc">Arusha Coffee Lodge grounds</div>
+        <ul><li>Workshop employing artisans with disabilities</li><li>Hand-blown recycled glass, beadwork, textiles</li><li>Watch the makers, buy directly, lovely story</li></ul>
+        <div class="foot"><span class="chip">Watch &amp; buy</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag val">Arusha · the gemstone</span>
+        <h3>The Tanzanite Experience</h3>
+        <div class="loc">Central Arusha</div>
+        <ul><li>Tanzanite is found <b>only</b> here, near Kilimanjaro</li><li>Certified stones with proper paperwork</li><li>A museum-tour explains grading before you buy</li></ul>
+        <div class="foot"><span class="chip">Certified</span></div>
+      </div>
+      <div class="hcard">
+        <span class="tag sea">Zanzibar · Day 9</span>
+        <h3>Stone Town lanes</h3>
+        <div class="loc">The old town + Darajani market</div>
+        <ul><li>Spices by the bag — cloves, vanilla, nutmeg, cardamom</li><li>Kanga and kitenge cloth, carved chests, antiques, brass</li><li>Memories of Zanzibar and small designer boutiques for a smarter buy</li></ul>
+        <div class="foot"><span class="chip">Spices</span><span class="chip">Textiles</span></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 style="font-size:18px;margin:0 0 6px">What to actually buy</h3>
+      <p style="color:var(--muted);font-size:13.5px;margin:0 0 16px">The things worth the (soft, 15 kg) bag.</p>
+      <div class="dish"><div class="nm">Tanzanite</div><div class="d">The violet-blue gem mined only near Kilimanjaro. Buy certified, from a reputable dealer, with paperwork — never on the street.</div></div>
+      <div class="dish"><div class="nm">Tingatinga paintings</div><div class="d">Tanzania's own vivid, whimsical art style — bright animals on canvas. Roll them for the flight home.</div></div>
+      <div class="dish"><div class="nm">Makonde carvings</div><div class="d">Intricate ebony sculpture from the Makonde people. Beautiful, but heavy — choose small.</div></div>
+      <div class="dish"><div class="nm">Zanzibar spices</div><div class="d">Cloves, vanilla pods, cardamom, nutmeg — fresh, cheap, and the easiest gifts to bring back.</div></div>
+      <div class="dish"><div class="nm">Kanga &amp; kitenge</div><div class="d">Printed cloth, each kanga carrying a Swahili proverb. Light, useful, endlessly giftable.</div></div>
+      <div class="dish"><div class="nm">Carved Zanzibari chest</div><div class="d">The brass-studded wooden chests are iconic — small versions ship well if you fall for one.</div></div>
+    </div>
+    <div class="note"><b>Bargaining:</b> haggle at Darajani and the roadside markets (start low, settle mid). At the Cultural Heritage Centre, Shanga, the Tanzanite Experience and boutiques, prices are fixed and fair.</div>
+  </div>
+</section>
+
+<!-- ESSENTIALS -->
+<section id="essentials" style="border-bottom:none">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">07</span><h2>Entry &amp; essentials</h2></div>
+    <p class="sec-sub">Only one country's paperwork now — simpler than the Kenya + Tanzania version, and the routing spares your parents the mandatory jab.</p>
+    <div class="grid2">
+      <div class="info">
+        <h3><span class="em">🛂</span> Tanzania eVisa — all three</h3>
+        <p>One visa covers the whole trip, mainland and Zanzibar.</p>
+        <div class="kv">
+          <span class="k">Cost</span><span class="v"><span class="fx">~$50 pp</span> (ordinary tourist)</span>
+          <span class="k">Apply at</span><span class="v">immigration.go.tz (official only)</span>
+          <span class="k">When</span><span class="v">≥2 weeks before departure</span>
+          <span class="k">Need</span><span class="v">Passport 6mo+ valid, photo, itinerary, first hotel</span>
+        </div>
+        <div class="note" style="margin-top:12px">Carry your passport even for the domestic hop to Zanzibar — it's checked on arrival on the island.</div>
+      </div>
+      <div class="info">
+        <h3><span class="em">💉</span> Health — the good news</h3>
+        <p class="mono" style="font-size:12.5px;color:var(--teal)">YELLOW FEVER: NOT REQUIRED</p>
+        <p>Because you fly in <b>directly via the Gulf</b> (not from Kenya), the yellow-fever certificate isn't a requirement. It's still sensible to get for safari travel, but it's no longer compulsory — a real plus for older travellers.</p>
+        <p><b>Malaria:</b> the Serengeti and Zanzibar are risk areas — prophylaxis recommended; see a travel clinic 4–6 weeks out.</p>
+        <p><b>Insurance:</b> must cover safari, <b>ballooning</b> (some policies exclude it), and evacuation.</p>
+      </div>
+      <div class="info">
+        <h3><span class="em">🏝️</span> Zanzibar specifics</h3>
+        <div class="kv">
+          <span class="k">Mandatory insurance</span><span class="v"><span class="fx">~$44 pp</span> (Zanzibar ZIC)</span>
+          <span class="k">Best coast</span><span class="v">Nungwi / Kendwa (swim any tide)</span>
+          <span class="k">Dress</span><span class="v">Cover shoulders/knees in Stone Town</span>
+          <span class="k">Passport</span><span class="v">Checked on the domestic flight in</span>
+        </div>
+        <div class="note" style="margin-top:12px">The Zanzibar insurance is separate from your travel policy and bought online before arrival.</div>
+      </div>
+      <div class="info">
+        <h3><span class="em">📅</span> Booking clock &amp; money</h3>
+        <div class="kv">
+          <span class="k">Now – early 2027</span><span class="v">Book camps (mobile ones fill fast)</span>
+          <span class="k">Late 2026 – early 2027</span><span class="v">Open-jaw international flights</span>
+          <span class="k">By spring 2027</span><span class="v">Balloon + internal flights</span>
+          <span class="k">Currency</span><span class="v">TZS; USD widely taken; cards patchy</span>
+          <span class="k">Rate used</span><span class="v"><span class="fx">$1 ≈ £0.79</span></span>
+        </div>
+        <div class="note" style="margin-top:12px"><b>2026 park fees</b> used as the 2027 basis: Serengeti ~$83pp/day, Ngorongoro ~$80pp/day + $295/vehicle crater descent. Reviewed each July, so leave headroom.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>Tanzania · 19–30 August 2027 — mid-range planning estimates, peak season. Verify live rates before booking.</span>
+    <span class="mono" id="footTotal">£—</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var GBP=0.79, CEIL=15000, MAX=18000;
+
+  var C={
+    intlFlights:3050,          // group, open-jaw (parents 2x~1000 + you ~1050)
+    visaInsurance:(50+44)*3,   // Tanzania visa + Zanzibar insurance
+    internalFlights:1950,      // Arusha->Kogatende + Serengeti->Zanzibar, group
+    kiliDay:120*3,             // day tour pp
+    arushaMeals:240,           // 2 days, group
+    tipsMisc:150*3,
+    zanzActivities:150*3+120,  // Stone Town/spice/dhow/snorkel + transfers
+    balloonPP:550,
+    arushaRoomNight:{budgetmid:150,mid:200,plus:300},
+    serengetiPP:{budgetmid:400,mid:500,plus:680},
+    craterPP:{budgetmid:470,mid:550,plus:700}, // 1 night all-in incl fees
+    zanzRoomNight:{budgetmid:170,mid:220,plus:340},
+    singleSupp:0.35, rooms:2, arushaNights:2, craterNights:1
+  };
+
+  var LABEL={budgetmid:'Budget-mid',mid:'Mid-range',plus:'Comfort-plus'};
+
+  function compute(s){
+    var accomSer_parents = 2*C.serengetiPP[s.comfort]*s.ser;
+    var accomSer_you = C.serengetiPP[s.comfort]*s.ser*(s.single?(1+C.singleSupp):1);
+    var serengeti = accomSer_parents+accomSer_you;
+    var crater_parents = 2*C.craterPP[s.comfort]*C.craterNights;
+    var crater_you = C.craterPP[s.comfort]*C.craterNights*(s.single?(1+C.singleSupp):1);
+    var crater = crater_parents+crater_you;
+    var arusha = C.rooms*C.arushaNights*C.arushaRoomNight[s.comfort];
+    var zanzibar = C.rooms*s.zan*C.zanzRoomNight[s.comfort];
+    var balloon = C.balloonPP*3;
+
+    var b={
+      "Serengeti":serengeti,
+      "Int'l flights":C.intlFlights,
+      "Zanzibar":zanzibar + C.zanzActivities,
+      "Bush flights":C.internalFlights,
+      "Ngorongoro":crater,
+      "Balloon":balloon,
+      "Arusha + Kili":arusha + C.kiliDay + C.arushaMeals,
+      "Visas + extras":C.visaInsurance + C.tipsMisc
+    };
+    var t=0,k; for(k in b) t+=b[k];
+    if(s.uplift){ for(k in b) b[k]*=1.07; t*=1.07; }
+    return {breakdown:b,total:t};
+  }
+
+  var COLORS={"Serengeti":"#A2381F","Int'l flights":"#D2942A","Zanzibar":"#3B4E7A",
+    "Bush flights":"#B87C18","Ngorongoro":"#6C7844","Balloon":"#2C6B66",
+    "Arusha + Kili":"#8A8470","Visas + extras":"#B0A894"};
+
+  var state={comfort:'mid',ser:3,zan:4,single:true,uplift:false};
+
+  function fmt(n){return Math.round(n).toLocaleString('en-GB');}
+  function toGbp(u){return u*GBP;}
+  function syncSeg(id,val){
+    var seg=document.getElementById(id);
+    Array.prototype.forEach.call(seg.querySelectorAll('button'),function(b){
+      b.setAttribute('aria-pressed', b.dataset.v===val?'true':'false');
+    });
+  }
+
+  function render(){
+    var r=compute(state), gbp=toGbp(r.total), over=gbp>CEIL;
+    document.getElementById('totalGbp').textContent=fmt(gbp);
+    document.getElementById('totalUsd').textContent='≈ $'+fmt(r.total);
+    document.getElementById('donutAmt').textContent='£'+fmt(gbp);
+    document.getElementById('footTotal').textContent='£'+fmt(gbp)+' group total';
+
+    var pill=document.getElementById('headPill');
+    pill.textContent='£'+fmt(gbp)+(over?' · over':' · fits');
+    pill.className='pill '+(over?'over':'ok');
+
+    var sb=document.getElementById('statusBadge');
+    sb.className='status '+(over?'over':'ok');
+    sb.textContent=over?('£'+fmt(gbp-CEIL)+' over the wall'):('£'+fmt(CEIL-gbp)+' of headroom');
+
+    var pct=Math.min(gbp/MAX*100,100);
+    var fill=document.getElementById('meterFill');
+    fill.style.width=pct+'%';
+    fill.style.background=over?'linear-gradient(90deg,#C6893A,#A2381F)':'linear-gradient(90deg,#E0B457,#2C6B66)';
+    document.getElementById('meterCeiling').style.left=(CEIL/MAX*100)+'%';
+    document.getElementById('meterSun').style.left=pct+'%';
+
+    var acc=0,stops=[],order=Object.keys(r.breakdown);
+    order.forEach(function(k){
+      var f=r.breakdown[k]/r.total*100;
+      stops.push(COLORS[k]+' '+acc.toFixed(2)+'% '+(acc+f).toFixed(2)+'%'); acc+=f;
+    });
+    document.getElementById('donut').style.background='conic-gradient('+stops.join(',')+')';
+
+    var leg=document.getElementById('legend'); leg.innerHTML='';
+    order.forEach(function(k){
+      var row=document.createElement('div'); row.className='row';
+      row.innerHTML='<span class="sw" style="background:'+COLORS[k]+'"></span><span class="nm">'+k+
+        '</span><span class="amt">£'+fmt(toGbp(r.breakdown[k]))+'</span>';
+      leg.appendChild(row);
+    });
+
+    syncSeg('segComfort',state.comfort);
+    syncSeg('segSer',String(state.ser));
+    syncSeg('segZan',String(state.zan));
+    document.getElementById('tSingle').checked=state.single;
+    document.getElementById('tUplift').checked=state.uplift;
+    document.getElementById('comfortHint').textContent=LABEL[state.comfort]+
+      ' camps · '+state.ser+' Serengeti + 1 crater + '+state.zan+' beach nights.';
+  }
+
+  var SCEN=[
+    {name:'Budget-mid',note:'S3 / Z4',s:{comfort:'budgetmid',ser:3,zan:4,single:true,uplift:false}},
+    {name:'Mid — recommended',note:'S3 / Z4',s:{comfort:'mid',ser:3,zan:4,single:true,uplift:false},rec:true},
+    {name:'Mid, trim a beach night',note:'S3 / Z3',s:{comfort:'mid',ser:3,zan:3,single:true,uplift:false}},
+    {name:'Mid + extra Serengeti night',note:'S4 / Z4',s:{comfort:'mid',ser:4,zan:4,single:true,uplift:false}},
+    {name:'Mid + 2027 uplift',note:'rates rise 7%',s:{comfort:'mid',ser:3,zan:4,single:true,uplift:true}},
+    {name:'Comfort-plus',note:'nicer camps throughout',s:{comfort:'plus',ser:3,zan:4,single:true,uplift:false}}
+  ];
+
+  function buildScenarios(){
+    var host=document.getElementById('scenarioBars');
+    var vals=SCEN.map(function(x){return toGbp(compute(x.s).total);});
+    var scaleMax=Math.max(MAX,Math.max.apply(null,vals));
+    var ceilPct=CEIL/scaleMax*100;
+    host.innerHTML='';
+    SCEN.forEach(function(x){
+      var g=toGbp(compute(x.s).total), over=g>CEIL, pct=g/scaleMax*100;
+      var el=document.createElement('div'); el.className='sbar'+(x.rec?' rec':'');
+      el.innerHTML='<div class="lab"><span class="n">'+x.name+' <small>· '+x.note+'</small></span>'+
+        '<span class="amt" style="color:'+(over?'#A2381F':'#2C6B66')+'">£'+fmt(g)+'</span></div>'+
+        '<div class="track"><div class="ceil-line" style="left:'+ceilPct+'%"></div>'+
+        '<div class="fillb" style="width:'+pct+'%;background:'+(over?'linear-gradient(90deg,#C6893A,#A2381F)':'linear-gradient(90deg,#E0B457,#2C6B66)')+'"></div></div>';
+      host.appendChild(el);
+    });
+  }
+
+  function bindSeg(id,key,cast){
+    document.getElementById(id).addEventListener('click',function(e){
+      var b=e.target.closest('button'); if(!b) return;
+      state[key]=cast?cast(b.dataset.v):b.dataset.v; render();
+    });
+  }
+  bindSeg('segComfort','comfort');
+  bindSeg('segSer','ser',function(v){return parseInt(v,10);});
+  bindSeg('segZan','zan',function(v){return parseInt(v,10);});
+  document.getElementById('tSingle').addEventListener('change',function(e){state.single=e.target.checked;render();});
+  document.getElementById('tUplift').addEventListener('change',function(e){state.uplift=e.target.checked;render();});
+
+  var PRE={
+    rec:{comfort:'mid',ser:3,zan:4,single:true,uplift:false},
+    buffer:{comfort:'budgetmid',ser:3,zan:4,single:true,uplift:false},
+    max:{comfort:'mid',ser:3,zan:3,single:true,uplift:false}
+  };
+  document.getElementById('presets').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    var p=PRE[b.dataset.preset]; if(!p) return;
+    Object.keys(p).forEach(function(k){state[k]=p[k];}); render();
+  });
+
+  buildScenarios(); render();
+})();
+</script>
+</body>
+</html>
